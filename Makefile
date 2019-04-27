@@ -11,7 +11,8 @@ LIBS = sdl2
 LDFLAGS += $(shell pkg-config --libs $(LIBS))
 CPPFLAGS += $(shell pkg-config --cflags $(LIBS))
 
-DESTDIR ?= /usr/local
+PREFIX ?= /usr/local
+DESTDIR ?= /
 
 BINS=fhplayer
 
@@ -22,7 +23,9 @@ fhplayer: $(DEP) src/fhplayer.c src/fhstream.c src/fhstream.h
 
 .PHONY:
 install: $(BINS)
-	mkdir -p $(DESTDIR)/bin
-	install $(BINS) $(DESTDIR)/bin
+	mkdir -p $(DESTDIR)/${PREFIX}/bin
+	install $(BINS) $(DESTDIR)/$(PREFIX)/bin
+uninstall:
+	cd $(DESTDIR)/$(PREFIX)/bin; rm $(BINS)
 clean:
 	rm -f $(BINS)
